@@ -6,12 +6,12 @@ Evt(x) Parser that takes XML and outputs JSON
 	Input: XML, Output: JSON
 	########
 
-Usage: evtxparse [OPTIONS] argument ...
-  -d	Turn on console level debugging.
-  -f string
-    	Read from file.
-  -h	Display use flags.
-  -o	Write JSON to stdout.
-  -s	Read from stdin xml stream.
-  -w string
+Usage: evtxparse [OPTIONS] argument ... <br>
+  -d	Turn on console level debugging. <br>
+  -f string <br>
+    	Read from file. <br>
+  -h	Display use flags. <br>
+  -o	Write JSON to stdout. <br>
+  -s	Read from stdin xml stream. <br>
+  -w string <br>
     	Write output to file. **Placeholder if needed later**
