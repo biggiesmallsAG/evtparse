@@ -2,8 +2,14 @@
 Evt(x) Parser that takes XML and outputs JSON
 ```
 	########
-	Evtparse.GO version 1.0 (5/12/2016), by Daniel Eden, SecureWorks.
+	Evtparse.GO version 1.01 (8/12/2016), by Daniel Eden, SecureWorks.
 	Input: XML, Output: JSON
+
+	- Version 1.0
+		> First realease of code and concept
+		> Ability to stream STDIN or from file
+		> Currently only able to do "System" eventlogs
+
 	########
 
 Usage: evtxparse [OPTIONS] argument ... 

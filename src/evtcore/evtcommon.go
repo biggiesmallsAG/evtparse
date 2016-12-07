@@ -1,12 +1,14 @@
 package evtcore
 
 import (
+	"bytes"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
 	"log"
 	"os"
+	"strings"
 )
 
 const (
@@ -22,6 +24,12 @@ var (
 type FileHandler struct {
 	File   *os.File
 	Writer *io.Writer
+}
+
+func LogError(debug bool, err error) {
+	if DEBUG {
+		log.Printf("ERROR - %s\n", err)
+	}
 }
 
 func LogConsole(sout bool, message string) {
@@ -54,6 +62,19 @@ func ReadStdin() (count int) {
 	return
 }
 
+func RemoveBadChar(line io.Reader) (nl io.Reader) {
+	badchars := []string{"\u0001", "\u0002", "\u0003"}
+
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(line)
+
+	for _, char := range badchars {
+		rem := strings.Replace(buf.String(), char, "", -1)
+		nl = strings.NewReader(rem)
+	}
+	return
+}
+
 func EncodeJSONStruct(e *EventLog) {
 	ret, err := json.Marshal(&e)
 
@@ -66,13 +87,19 @@ func EncodeJSONStruct(e *EventLog) {
 }
 
 func DecodeXMLandStreamJSON(stream io.Reader) (count int) {
+	stream = RemoveBadChar(stream)
 	decoder := xml.NewDecoder(stream)
 
 	dataattrs := make(map[string]interface{})
 
 	for {
 
-		t, _ := decoder.Token()
+		t, err := decoder.Token()
+
+		if err != nil || err == io.EOF {
+			LogError(DEBUG, err)
+			break
+		}
 
 		if t == nil {
 			break
@@ -89,9 +116,11 @@ func DecodeXMLandStreamJSON(stream io.Reader) (count int) {
 				decoder.DecodeElement(&v, &se)
 
 				for _, data := range v.EventData.Data {
+
 					if data.Key == "" {
 						data.Key = "empty_value"
 					}
+
 					dataattrs[data.Key] = data.Value
 				}
 
