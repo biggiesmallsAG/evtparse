@@ -4,6 +4,10 @@ Evt(x) Parser that takes XML and outputs JSON
 	########
 	Evtparse.GO version 1.01 (8/12/2016), by Daniel Eden, SecureWorks.
 	Input: XML, Output: JSON
+	
+	To run this program you need to have https://github.com/williballenthin/python-evtx installed,
+	the scripts/evtxdump.py output is a XML stream to which you can pipe via stdin or dump to a file
+	and read in to evtxparse.go.
 
 	- Version 1.0
 		> First realease of code and concept
